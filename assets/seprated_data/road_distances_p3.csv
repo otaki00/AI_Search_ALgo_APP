@@ -1,0 +1,29 @@
+City 1,City 2,Road Distance (km)
+Tulkarm,Jericho,91.37685
+Tulkarm,Rafah,177.77160999999998
+Tulkarm,Khan Yunis,184.78492
+Tulkarm,Beit Lahia,214.96875
+Tulkarm,Beit Jala,101.46127
+Tulkarm,Qalqilya,19.0585
+Tulkarm,Gaza Beach,212.60989
+Jericho,Rafah,188.51923000000002
+Jericho,Khan Yunis,195.53255
+Jericho,Beit Lahia,225.71638000000002
+Jericho,Beit Jala,47.91362
+Jericho,Qalqilya,108.0398
+Jericho,Gaza Beach,223.35752
+Rafah,Khan Yunis,18.71882
+Rafah,Beit Lahia,48.90264
+Rafah,Beit Jala,144.13719
+Rafah,Qalqilya,166.17508999999998
+Rafah,Gaza Beach,46.54379
+Khan Yunis,Beit Lahia,30.409650000000003
+Khan Yunis,Beit Jala,152.22001999999998
+Khan Yunis,Qalqilya,174.25792
+Khan Yunis,Gaza Beach,28.05079
+Beit Lahia,Beit Jala,181.39191
+Beit Lahia,Qalqilya,203.4298
+Beit Lahia,Gaza Beach,9.8225
+Beit Jala,Qalqilya,89.33871
+Beit Jala,Gaza Beach,181.79810999999998
+Qalqilya,Gaza Beach,200.75747

@@ -1,0 +1,106 @@
+City 1,City 2,Road Distance
+Jerusalem,Gaza City,187.17273
+Jerusalem,Ramallah,17.56927
+Jerusalem,Hebron,34.87203
+Jerusalem,Nablus,69.31698
+Jerusalem,Bethlehem,16.342950000000002
+Jerusalem,Jenin,139.44848000000002
+Jerusalem,Tulkarm,87.78422
+Jerusalem,Jericho,37.11676
+Jerusalem,Rafah,152.96819
+Jerusalem,Khan Yunis,159.9815
+Jerusalem,Beit Lahia,190.16531
+Jerusalem,Beit Jala,16.88592
+Jerusalem,Qalqilya,76.56416
+Jerusalem,Gaza Beach,187.80645
+Gaza City,Ramallah,209.77833
+Gaza City,Hebron,160.29356
+Gaza City,Nablus,225.27025
+Gaza City,Bethlehem,177.99620000000002
+Gaza City,Jenin,263.46138
+Gaza City,Tulkarm,211.79713
+Gaza City,Jericho,223.14452
+Gaza City,Rafah,46.10749
+Gaza City,Khan Yunis,28.03362
+Gaza City,Beit Lahia,6.96773
+Gaza City,Beit Jala,178.53917
+Gaza City,Qalqilya,200.57706
+Gaza City,Gaza Beach,2.91735
+Ramallah,Hebron,51.38184
+Ramallah,Nablus,52.63188
+Ramallah,Bethlehem,32.85276
+Ramallah,Jenin,128.40559
+Ramallah,Tulkarm,76.74133
+Ramallah,Jericho,40.22675
+Ramallah,Rafah,162.99855
+Ramallah,Khan Yunis,170.01185999999998
+Ramallah,Beit Lahia,200.19567
+Ramallah,Beit Jala,33.39573
+Ramallah,Qalqilya,65.52127
+Ramallah,Gaza Beach,197.83681
+Hebron,Nablus,103.72805
+Hebron,Bethlehem,26.67365
+Hebron,Jenin,177.9735
+Hebron,Tulkarm,126.30924
+Hebron,Jericho,74.31398
+Hebron,Rafah,125.95626
+Hebron,Khan Yunis,132.96957999999998
+Hebron,Beit Lahia,163.15339
+Hebron,Beit Jala,27.21662
+Hebron,Qalqilya,115.08918
+Hebron,Gaza Beach,160.79453
+Nablus,Bethlehem,115.28431
+Nablus,Jenin,42.79827
+Nablus,Tulkarm,29.80943
+Nablus,Jericho,66.71609
+Nablus,Rafah,191.28411
+Nablus,Khan Yunis,198.29744
+Nablus,Beit Lahia,228.48125
+Nablus,Beit Jala,84.37333
+Nablus,Qalqilya,41.18194
+Nablus,Gaza Beach,226.12239
+Bethlehem,Jenin,152.55078
+Bethlehem,Tulkarm,100.88652
+Bethlehem,Jericho,47.36797
+Bethlehem,Rafah,146.47019
+Bethlehem,Khan Yunis,153.4835
+Bethlehem,Beit Lahia,183.66733
+Bethlehem,Beit Jala,2.5682600000000004
+Bethlehem,Qalqilya,89.66645
+Bethlehem,Gaza Beach,181.30847
+Jenin,Tulkarm,42.54218
+Jenin,Jericho,98.07781
+Jenin,Rafah,228.81675
+Jenin,Khan Yunis,235.83006
+Jenin,Beit Lahia,266.01388000000003
+Jenin,Beit Jala,152.50641000000002
+Jenin,Qalqilya,72.2182
+Jenin,Gaza Beach,263.65503
+Tulkarm,Jericho,91.37685
+Tulkarm,Rafah,177.77160999999998
+Tulkarm,Khan Yunis,184.78492
+Tulkarm,Beit Lahia,214.96875
+Tulkarm,Beit Jala,101.46127
+Tulkarm,Qalqilya,19.0585
+Tulkarm,Gaza Beach,212.60989
+Jericho,Rafah,188.51923
+Jericho,Khan Yunis,195.53255
+Jericho,Beit Lahia,225.71638
+Jericho,Beit Jala,47.91362
+Jericho,Qalqilya,108.0398
+Jericho,Gaza Beach,223.35752
+Rafah,Khan Yunis,18.71882
+Rafah,Beit Lahia,48.90264
+Rafah,Beit Jala,144.13719
+Rafah,Qalqilya,166.17508999999998
+Rafah,Gaza Beach,46.54379
+Khan Yunis,Beit Lahia,30.409650000000003
+Khan Yunis,Beit Jala,152.22001999999998
+Khan Yunis,Qalqilya,174.25792
+Khan Yunis,Gaza Beach,28.05079
+Beit Lahia,Beit Jala,181.39191
+Beit Lahia,Qalqilya,203.4298
+Beit Lahia,Gaza Beach,9.8225
+Beit Jala,Qalqilya,89.33871
+Beit Jala,Gaza Beach,181.79811
+Qalqilya,Gaza Beach,200.75747
