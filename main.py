@@ -17,6 +17,17 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         
+        
+        
+        # print(cities)
+        
+        html_file = self.make_map_file()
+        
+        # call the method for create the UI and pass the html_file for map
+        self.create_UI(html_file)
+        
+    
+    def make_map_file(self):
         # now lets start by fisrt creating map, 
         
         # this initialize the map, and set initial postion to palestine map
@@ -24,8 +35,6 @@ class MainWindow(QMainWindow):
         palestine_map = folium.Map(location=[31.9522, 35.2332], tiles='cartoDB Positron', zoom_start=8, max_bounds=True, min_zoom=7, max_zoom=12)
         
         cities = getData.get_cities()
-        
-        # print(cities)
         
         for city in cities:
             marker = folium.Marker(
@@ -43,6 +52,12 @@ class MainWindow(QMainWindow):
         curr_path = os.path.dirname(os.path.abspath(__file__))
         html_file = os.path.join(curr_path, "map.html")
         
+        return html_file
+    
+    
+    
+    # this method is used for create the main UI for app
+    def create_UI(self, html_file):
         # create view for the map
         # initialize the webView
         self.web_view = QWebEngineView()
@@ -67,7 +82,6 @@ class MainWindow(QMainWindow):
         WelcomeMsg = QLabel("Welcome to PalestineCutter App")
         WelcomeMsg.setStyleSheet("color: #161853; font-weight:500; font-size: 24px")
         
-
         
         leftSideContainer.addWidget(WelcomeMsg)
         # creating the widget that will hold the map layout and other widgets
@@ -78,6 +92,17 @@ class MainWindow(QMainWindow):
         self.setGeometry(100, 100, 1300, 800)
         self.setWindowTitle("Palestine Cutter")
         
+    
+    # this method for make selection field, and will selection feild
+    def make_select_city(self, valuesToChooseFrom):
+        pass
+    
+    
+    # this method will make radio button, and return it 
+    def make_radio_algo(self, value):
+        pass
+
+
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
