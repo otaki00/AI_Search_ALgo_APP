@@ -17,6 +17,17 @@ def get_cities():
         
     return CITIES
 
+def get_cities_names():
+    names = []
+    cities = pd.read_csv('assets/cities.csv')
+    
+    # insert cities into CITIES list
+    for i in range(len(cities)):
+        names.append(cities['city'][i])
+
+        
+    return names
+
 # return the list of aerial distance that are stored in (assets/aerial_distances.csv)
 def get_aerial_distacnes():
     
@@ -53,3 +64,30 @@ def get_road_distacnes():
         ROAD_DISTANCE.append(new_dis)
         
     return ROAD_DISTANCE
+
+def connet_cities():
+    connections = [
+        ("Jerusalem", "Ramallah"),
+        ("Jerusalem", "Jericho"),
+        ("Jerusalem", "Bethlehem"),
+        ("Jerusalem", "Qalqilya"),
+        ("Jerusalem", "Gaza City"),
+        ("Qalqilya", "Tulkarem"),
+        ("Ramallah", "Nablus"),
+        ("Nablus", "Jenin"),
+        ("Nablus", "Tulkarem"),
+        ("Ramallah", "Jericho"),
+        ("Jericho", "Hebron"),
+        ("Jericho", "Nablus"),
+        ("Hebron", "Bethlehem"),
+        ("Bethlehem", "Beit Jala"),
+        ("Bethlehem", "Khan Yunis"),
+        ("Gaza City", "Gaza Beach"),
+        ("Gaza City", "Khan Yunis"),
+        ("Gaza City", "Beit Lahia"),
+        ("Khan Yunis", "Gaza Beach"),
+        ("Khan Yunis", "Rafah"),
+        ("Rafah", "Gaza Beach"),
+    ]
+    
+    return connections
