@@ -52,7 +52,7 @@ def get_road_distacnes():
     
     ROAD_DISTANCE = []
     
-    road_distance =pd.read_csv('assets/road_distacne.csv')
+    road_distance =pd.read_csv('assets/road_distance.csv')
     
     for i in range(len(road_distance)):
         new_dis = {
@@ -72,10 +72,10 @@ def connet_cities():
         ("Jerusalem", "Bethlehem"),
         ("Jerusalem", "Qalqilya"),
         ("Jerusalem", "Gaza City"),
-        ("Qalqilya", "Tulkarem"),
+        ("Qalqilya", "Tulkarm"),
         ("Ramallah", "Nablus"),
         ("Nablus", "Jenin"),
-        ("Nablus", "Tulkarem"),
+        ("Nablus", "Tulkarm"),
         ("Ramallah", "Jericho"),
         ("Jericho", "Hebron"),
         ("Jericho", "Nablus"),
@@ -91,3 +91,42 @@ def connet_cities():
     ]
     
     return connections
+
+def get_graph_edges_values_road_distance():
+    
+    road_distance_for_all = get_road_distacnes()
+    connections = connet_cities()
+    road_distance_for_graph_nodes =[]
+    
+    i = 0
+    j = 0
+    
+    while j < len(connections) and i < len(road_distance_for_all):
+        if (road_distance_for_all[i]['city1'] == connections[j][0] and road_distance_for_all[i]['city2'] == connections[j][1]) or (road_distance_for_all[i]['city1'] == connections[j][1] and road_distance_for_all[i]['city2'] == connections[j][0]):
+            
+            road_distance_for_graph_nodes.append((road_distance_for_all[i]['city1'],road_distance_for_all[i]['city2'],road_distance_for_all[i]['road distance']))
+            j+=1
+            i = 0
+        else:
+            i+=1        
+    return road_distance_for_graph_nodes
+
+
+def get_graph_edges_values_aerial_distance():
+    
+    aerial_distance_for_all = get_aerial_distacnes()
+    connections = connet_cities()
+    aerial_distance_for_graph_nodes =[]
+    
+    i = 0
+    j = 0
+    
+    while j < len(connections) and i < len(aerial_distance_for_all):
+        if (aerial_distance_for_all[i]['city1'] == connections[j][0] and aerial_distance_for_all[i]['city2'] == connections[j][1]) or (aerial_distance_for_all[i]['city1'] == connections[j][1] and aerial_distance_for_all[i]['city2'] == connections[j][0]):
+            
+            aerial_distance_for_graph_nodes.append((aerial_distance_for_all[i]['city1'],aerial_distance_for_all[i]['city2'],aerial_distance_for_all[i]['aerial distance']))
+            j+=1
+            i = 0
+        else:
+            i+=1        
+    return aerial_distance_for_graph_nodes

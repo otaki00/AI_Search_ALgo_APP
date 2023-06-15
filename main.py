@@ -20,7 +20,7 @@ CITIES = getData.get_cities()
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        
+        self.setFixedSize(1220, 733)  # Set the fixed size of the window
         
         html_file = self.make_map_file()
         
@@ -82,8 +82,10 @@ class MainWindow(QMainWindow):
         self.pushButton.clicked.connect(self.doSearch)
         
         self.showGraph.setStyleSheet("background-color:#C3073F; border-radius:5px;color:white;")
-        self.showGraph.clicked.connect(self.displayGraph)
-    
+        self.showGraph.clicked.connect(self.displayGraphRoad)
+        
+        self.showGraph_2.setStyleSheet("background-color:#D12122; border-radius:5px;color:white;")
+        self.showGraph_2.clicked.connect(self.displayGraphAerial)
     
     def drawLine(self, city1Cor, city2Cor):
 
@@ -93,8 +95,11 @@ class MainWindow(QMainWindow):
         # Add the PolyLine to the map
         line.add_to(self.palestine_map)
     
-    def displayGraph(self) :
-        getGraph.make_graph(getData)
+    def displayGraphRoad(self) :
+        getGraph.make_graph_with_road_distance(getData)
+    
+    def displayGraphAerial(self) :
+        getGraph.make_graph_with_aerial_distance(getData)
     
     # this method for make selection field, and will selection feild
     def make_select_options(self):
