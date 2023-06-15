@@ -9,6 +9,7 @@ from PyQt5 import uic
 # for display the map that i will use
 # its an extrenal library that used for crate and display interactive maps
 import folium 
+from folium.features import DivIcon
 import os
 import sys
 from get_data import getData
@@ -16,6 +17,31 @@ from get_data import getGraph
 
 
 CITIES = getData.get_cities()
+
+
+class MapDrawer:
+    def __init__(self, map_instance, web_view):
+        self.map = map_instance
+        self.web_view = web_view
+
+    def drawLine(self, city1Cor, city2Cor, distance):
+        # Create a PolyLine between the two cities
+        line = folium.PolyLine(locations=[city1Cor, city2Cor], color='blue', weight=4, fit_bounds=False)
+        
+        # Calculate the midpoint between the two cities
+        midpoint = [(city1Cor[0] + city2Cor[0]) / 2, (city1Cor[1] + city2Cor[1]) / 2]
+
+        # Create a DivIcon with the desired text content
+        icon = DivIcon(icon_size=(150, 36), icon_anchor=(75, 18), html=f'<div style="font-size: 14px;">{distance}</div>')
+
+        # Add the DivIcon to the line as a marker at the midpoint
+        folium.Marker(location=midpoint, icon=icon).add_to(self.map)
+
+        # Add the PolyLine to the map
+        line.add_to(self.map)
+        
+        # Update the HTML content of the web view
+        self.web_view.setHtml(self.map._repr_html_())
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -53,8 +79,6 @@ class MainWindow(QMainWindow):
         
         return self.html_file
     
-    
-    
     # this method is used for create the main UI for app
     def create_UI(self, html_file):
         # create view for the map
@@ -87,13 +111,17 @@ class MainWindow(QMainWindow):
         self.showGraph_2.setStyleSheet("background-color:#D12122; border-radius:5px;color:white;")
         self.showGraph_2.clicked.connect(self.displayGraphAerial)
     
-    def drawLine(self, city1Cor, city2Cor):
+    def drawLine(self, city1Cor, city2Cor, distance):
 
-        # Create a PolyLine between the two cities
-        line = folium.PolyLine(locations=[city1Cor, city2Cor], color='blue', weight=3)
+        # # Create a PolyLine between the two cities
+        # line = folium.PolyLine(locations=[city1Cor, city2Cor], color='blue', weight=3)
 
-        # Add the PolyLine to the map
-        line.add_to(self.palestine_map)
+        # # Add the PolyLine to the map
+        # line.add_to(self.palestine_map)
+        
+        mapDraw = MapDrawer(self.palestine_map, self.web_view)
+        mapDraw.drawLine(city1Cor, city2Cor, str(43.2))
+        self.web_view.setHtml(self.palestine_map._repr_html_())
     
     def displayGraphRoad(self) :
         getGraph.make_graph_with_road_distance(getData)
@@ -110,7 +138,6 @@ class MainWindow(QMainWindow):
         for value in CITIES:
             self.src_combo.addItem(value['name'])
             self.dst_combo.addItem(value['name'])
-    
     
     def doSearch(self):
         srcCity = self.src_combo.currentText()
@@ -129,7 +156,7 @@ class MainWindow(QMainWindow):
                 cityCor1 = [value['lat'], value['lng']]
             if value['name'] == dstCity:
                 cityCor2 = [value['lat'], value['lng']]
-        self.drawLine(cityCor1, cityCor2)
+        self.drawLine(cityCor1, cityCor2, str(43.2))
         self.palestine_map.save(self.html_file)
 
 
