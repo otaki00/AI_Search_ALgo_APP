@@ -43,3 +43,13 @@ def make_graph_with_road_distance(getData) :
     plt.show()
 
 
+def get_edges_with_values(getData):
+    # Create an empty graph
+    G = nx.Graph()
+
+    graph_edges_with_distance = getData.get_graph_edges_values_aerial_distance()
+    for i in range(len(graph_edges_with_distance)):
+        G.add_edge(graph_edges_with_distance[i][0], graph_edges_with_distance[i][1],distance="{:.2f}".format(graph_edges_with_distance[i][2]))
+        
+    
+    return G.edges(data=True)
