@@ -52,4 +52,6 @@ def get_edges_with_values(getData):
         G.add_edge(graph_edges_with_distance[i][0], graph_edges_with_distance[i][1],distance="{:.2f}".format(graph_edges_with_distance[i][2]))
         
     
-    return G.edges(data=True)
+    return G
+
+# print(get_edges_with_values)

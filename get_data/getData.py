@@ -1,6 +1,8 @@
 # use panda library to read .csv files
 import pandas as pd 
 
+
+
 # return the list of cities that are stored in (assets/cities.csv)
 def get_cities():
     CITIES = []
@@ -97,13 +99,14 @@ def get_graph_edges_values_road_distance():
     road_distance_for_all = get_road_distacnes()
     connections = connet_cities()
     road_distance_for_graph_nodes =[]
-    
     i = 0
     j = 0
     
     while j < len(connections) and i < len(road_distance_for_all):
         if (road_distance_for_all[i]['city1'] == connections[j][0] and road_distance_for_all[i]['city2'] == connections[j][1]) or (road_distance_for_all[i]['city1'] == connections[j][1] and road_distance_for_all[i]['city2'] == connections[j][0]):
             
+            # print(road_distance_for_all[i]['city1'],road_distance_for_all[i]['city2'],road_distance_for_all[i]['road distance'])
+            # road_distance_for_graph_nodes.append(1)
             road_distance_for_graph_nodes.append((road_distance_for_all[i]['city1'],road_distance_for_all[i]['city2'],road_distance_for_all[i]['road distance']))
             j+=1
             i = 0
@@ -111,6 +114,7 @@ def get_graph_edges_values_road_distance():
             i+=1        
     return road_distance_for_graph_nodes
 
+# print(get_graph_edges_values_road_distance())
 
 def get_graph_edges_values_aerial_distance():
     
@@ -130,3 +134,24 @@ def get_graph_edges_values_aerial_distance():
         else:
             i+=1        
     return aerial_distance_for_graph_nodes
+
+
+# this function return list of each city and the aerial distance 
+# between itslef and dest
+def get_heuristic_data(destenation):
+    data = {destenation: 0}
+    connection = connet_cities()
+    aerial_data = get_aerial_distacnes()
+    
+    for item in connection:
+        if item[0] == destenation or item[1] == destenation:
+            for city_data in aerial_data:
+                if city_data['city2'] == destenation :
+                    data[city_data['city1']] = city_data["aerial distance"]
+                elif city_data['city1'] == destenation :
+                    data[city_data['city2']] = city_data["aerial distance"]
+                else:
+                    continue
+    
+    return data
+

@@ -10,38 +10,52 @@ from PyQt5 import uic
 # its an extrenal library that used for crate and display interactive maps
 import folium 
 from folium.features import DivIcon
+from folium.plugins import MeasureControl
 import os
 import sys
 from get_data import getData
 from get_data import getGraph
+from get_data import bfs
+from get_data import aStar
+from timeit import default_timer as timeir
 
 
 CITIES = getData.get_cities()
 
 
 class MapDrawer:
-    def __init__(self, map_instance, web_view):
+    def __init__(self, map_instance, web_view, html_file):
         self.map = map_instance
         self.web_view = web_view
-
-    def drawLine(self, city1Cor, city2Cor, distance):
-        # Create a PolyLine between the two cities
-        line = folium.PolyLine(locations=[city1Cor, city2Cor], color='blue', weight=4, fit_bounds=False)
+        self.html_file = html_file
+    
+    def draw_path_on_map(self,path):
+        # Iterate over the path edges
+        for i in range(len(path) - 1):
+            start_city = path[i]
+            end_city = path[i + 1]
+            
+            # Get the coordinates of the start and end cities
+            start_coords = (start_city[0], start_city[1])
+            end_coords = (end_city[0], end_city[1])
+            
+            # Create a PolyLine object with the coordinates and add it to the map
+            line = folium.PolyLine([start_coords, end_coords], color='blue', weight=2.5, opacity=1)
+            line.add_to(self.map)
         
-        # Calculate the midpoint between the two cities
-        midpoint = [(city1Cor[0] + city2Cor[0]) / 2, (city1Cor[1] + city2Cor[1]) / 2]
+        # Save the map with the updated lines
+        self.map.save(self.html_file)
 
-        # Create a DivIcon with the desired text content
-        icon = DivIcon(icon_size=(150, 36), icon_anchor=(75, 18), html=f'<div style="font-size: 14px;">{distance}</div>')
 
-        # Add the DivIcon to the line as a marker at the midpoint
-        folium.Marker(location=midpoint, icon=icon).add_to(self.map)
+
+    def drawLine(self, city1Cor, city2Cor):
+        
+        # Create a PolyLine between the two cities
+        line = folium.PolyLine(locations=[city1Cor, city2Cor], color='blue', weight=3)
 
         # Add the PolyLine to the map
         line.add_to(self.map)
-        
-        # Update the HTML content of the web view
-        self.web_view.setHtml(self.map._repr_html_())
+        self.map.save(self.html_file)
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -95,7 +109,10 @@ class MainWindow(QMainWindow):
         mapFrame = self.forMap
         
         self.web_view = QWebEngineView()
+        self.web_view.setFixedSize(869, 711)
         self.web_view.load(QUrl.fromLocalFile(html_file))
+        
+        
         
         mapFrame.addWidget(self.web_view)
         
@@ -111,17 +128,41 @@ class MainWindow(QMainWindow):
         self.showGraph_2.setStyleSheet("background-color:#D12122; border-radius:5px;color:white;")
         self.showGraph_2.clicked.connect(self.displayGraphAerial)
     
-    def drawLine(self, city1Cor, city2Cor, distance):
+    # Handle the click event on the web view
+    def handle_map_click(pos):
+        lat, lon = pos.latitude(), pos.longitude()
+        print(f"Clicked at: {lat}, {lon}")
+    
+    def drawLine(self, path):
 
         # # Create a PolyLine between the two cities
         # line = folium.PolyLine(locations=[city1Cor, city2Cor], color='blue', weight=3)
 
         # # Add the PolyLine to the map
         # line.add_to(self.palestine_map)
+        cor_path = []
+        mapDraw = MapDrawer(self.palestine_map, self.web_view, self.html_file)
         
-        mapDraw = MapDrawer(self.palestine_map, self.web_view)
-        mapDraw.drawLine(city1Cor, city2Cor, str(43.2))
-        self.web_view.setHtml(self.palestine_map._repr_html_())
+        print(path)
+        for value in CITIES:
+            if value['name'] in path:
+                cor_path.append((value['lat'], value['lng']))
+        print(cor_path)
+        # print(cor_path)
+        for i in range(len(cor_path) - 1):
+            start_city = cor_path[i]
+            end_city = cor_path[i + 1]
+            
+            # Get the coordinates of the start and end cities
+            start_coords = (start_city[0], start_city[1])
+            end_coords = (end_city[0], end_city[1])
+            line = folium.PolyLine(locations=[start_coords, end_coords], color='blue', weight=3)
+            # Add the PolyLine to the map
+            line.add_to(self.palestine_map)
+            self.palestine_map.save(self.html_file)
+        
+        
+        self.create_UI(self.html_file)
     
     def displayGraphRoad(self) :
         getGraph.make_graph_with_road_distance(getData)
@@ -149,15 +190,44 @@ class MainWindow(QMainWindow):
             message_box.setText("The source City is the same as destination City !")
             message_box.exec_()
             return
-        cityCor1 = []
-        cityCor2 = []
-        for value in CITIES:
-            if value['name'] == srcCity:
-                cityCor1 = [value['lat'], value['lng']]
-            if value['name'] == dstCity:
-                cityCor2 = [value['lat'], value['lng']]
-        self.drawLine(cityCor1, cityCor2, str(43.2))
-        self.palestine_map.save(self.html_file)
+        # print(srcCity, dstCity)
+        
+        message_box = QMessageBox()
+        message_box.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
+        
+        if self.AStarAlgo.isChecked():
+            start = timeir()
+            result = aStar.AStar(start=srcCity, goal=dstCity, getData=getData, getGraph=getGraph)
+            end = timeir()
+            time = (end-start) * 1000
+            if result != None:
+                self.drawLine(result)
+                self.palestine_map.save(self.html_file)
+                message_box.setIcon(QMessageBox.Information)
+                message_box.setWindowTitle("the Path was Found")
+                result_msg = "the path is => \n"
+                for i in result:
+                    result_msg = result_msg + " , "+i
+                message_box.setText(result_msg+"\n\n\n the function takes  "+ str(time)+"mS to execute with A*")
+                message_box.exec_()
+                
+        else:
+            start = timeir()
+            result = bfs.BFS(start=srcCity, goal=dstCity, getData=getData, getGraph=getGraph)
+            end = timeir()
+            time = (end-start) * 1000
+            if result != None:
+                self.drawLine(result)
+                self.palestine_map.save(self.html_file)
+                message_box.setIcon(QMessageBox.Information)
+                message_box.setWindowTitle("the Path was Found")
+                result_msg = "the path is => \n"
+                for i in result:
+                    result_msg = result_msg + " , "+i
+                message_box.setText(result_msg+"\n\n\n the function takes  "+ str(time)+"mS to execute with BFS")
+                message_box.exec_()
+                
+            
 
 
 if __name__ == '__main__':
