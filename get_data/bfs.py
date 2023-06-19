@@ -3,7 +3,7 @@
 # this is implementation for BFS ALgorithm
 
 def BFS(start, goal, getData, getGraph):
-    graph = getGraph.get_edges_with_values(getData)
+    graph = getGraph.get_graph_values(getData)
     queue = [(start, [start])]
     visited = set()
 

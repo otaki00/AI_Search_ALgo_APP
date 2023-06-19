@@ -5,7 +5,7 @@ import heapq
 
 def AStar(start, goal, getData, getGraph):
     
-    graph = getGraph.get_edges_with_values(getData)
+    graph = getGraph.get_graph_values(getData)
     heuristic = getData.get_heuristic_data(goal)
     
     queue = []

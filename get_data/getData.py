@@ -67,6 +67,8 @@ def get_road_distacnes():
         
     return ROAD_DISTANCE
 
+
+
 def connet_cities():
     connections = [
         ("Jerusalem", "Ramallah"),
@@ -105,14 +107,14 @@ def get_graph_edges_values_road_distance():
     while j < len(connections) and i < len(road_distance_for_all):
         if (road_distance_for_all[i]['city1'] == connections[j][0] and road_distance_for_all[i]['city2'] == connections[j][1]) or (road_distance_for_all[i]['city1'] == connections[j][1] and road_distance_for_all[i]['city2'] == connections[j][0]):
             
-            # print(road_distance_for_all[i]['city1'],road_distance_for_all[i]['city2'],road_distance_for_all[i]['road distance'])
-            # road_distance_for_graph_nodes.append(1)
             road_distance_for_graph_nodes.append((road_distance_for_all[i]['city1'],road_distance_for_all[i]['city2'],road_distance_for_all[i]['road distance']))
             j+=1
             i = 0
         else:
             i+=1        
     return road_distance_for_graph_nodes
+
+
 
 # print(get_graph_edges_values_road_distance())
 

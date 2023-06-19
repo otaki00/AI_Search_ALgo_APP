@@ -18,44 +18,11 @@ from get_data import getGraph
 from get_data import bfs
 from get_data import aStar
 from timeit import default_timer as timeir
+import random
 
 
 CITIES = getData.get_cities()
 
-
-class MapDrawer:
-    def __init__(self, map_instance, web_view, html_file):
-        self.map = map_instance
-        self.web_view = web_view
-        self.html_file = html_file
-    
-    def draw_path_on_map(self,path):
-        # Iterate over the path edges
-        for i in range(len(path) - 1):
-            start_city = path[i]
-            end_city = path[i + 1]
-            
-            # Get the coordinates of the start and end cities
-            start_coords = (start_city[0], start_city[1])
-            end_coords = (end_city[0], end_city[1])
-            
-            # Create a PolyLine object with the coordinates and add it to the map
-            line = folium.PolyLine([start_coords, end_coords], color='blue', weight=2.5, opacity=1)
-            line.add_to(self.map)
-        
-        # Save the map with the updated lines
-        self.map.save(self.html_file)
-
-
-
-    def drawLine(self, city1Cor, city2Cor):
-        
-        # Create a PolyLine between the two cities
-        line = folium.PolyLine(locations=[city1Cor, city2Cor], color='blue', weight=3)
-
-        # Add the PolyLine to the map
-        line.add_to(self.map)
-        self.map.save(self.html_file)
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -68,13 +35,7 @@ class MainWindow(QMainWindow):
         self.create_UI(html_file)
         
     
-    def make_map_file(self):
-        # now lets start by fisrt creating map, 
-        
-        # this initialize the map, and set initial postion to palestine map
-        # by give the lat and lng values for palestine (center) 
-        self.palestine_map = folium.Map(location=[31.9522, 35.2332], tiles='cartoDB Positron', zoom_start=8, max_bounds=True, min_zoom=7, max_zoom=15)
-        
+    def add_markers_to_map(self):
         for city in CITIES:
             marker = folium.Marker(
                 location=[city['lat'], city['lng']],
@@ -82,7 +43,16 @@ class MainWindow(QMainWindow):
                 icon= folium.Icon(color='blue', icon='circle')
             )
             self.palestine_map.add_child(marker)
+    
+    def make_map_file(self):
+        # now lets start by fisrt creating map, 
         
+        # this initialize the map, and set initial postion to palestine map
+        # by give the lat and lng values for palestine (center) 
+        self.palestine_map = folium.Map(location=[31.9522, 35.2332], tiles='cartoDB Positron', zoom_start=8, max_bounds=True, min_zoom=7, max_zoom=15)
+        
+        
+        self.add_markers_to_map()
         
         # now lets ave the map in html file
         self.palestine_map.save('map.html')
@@ -128,41 +98,65 @@ class MainWindow(QMainWindow):
         self.showGraph_2.setStyleSheet("background-color:#D12122; border-radius:5px;color:white;")
         self.showGraph_2.clicked.connect(self.displayGraphAerial)
     
-    # Handle the click event on the web view
-    def handle_map_click(pos):
-        lat, lon = pos.latitude(), pos.longitude()
-        print(f"Clicked at: {lat}, {lon}")
-    
     def drawLine(self, path):
-
-        # # Create a PolyLine between the two cities
-        # line = folium.PolyLine(locations=[city1Cor, city2Cor], color='blue', weight=3)
-
-        # # Add the PolyLine to the map
-        # line.add_to(self.palestine_map)
-        cor_path = []
-        mapDraw = MapDrawer(self.palestine_map, self.web_view, self.html_file)
         
-        print(path)
-        for value in CITIES:
-            if value['name'] in path:
-                cor_path.append((value['lat'], value['lng']))
+        cor_path = []
+        i = 0
+        j = 0
+        
+        while i < len(path): 
+            if j == len(CITIES):
+                j = 0 
+            elif path[i] == CITIES[j]['name']:
+                cor_path.append((CITIES[j]['lat'], CITIES[j]['lng']))
+                i+=1
+                j =0
+            else:
+                j+=1
         print(cor_path)
-        # print(cor_path)
+        # Generate a random color
+        color = '#{:06x}'.format(random.randint(0, 256**3))
         for i in range(len(cor_path) - 1):
             start_city = cor_path[i]
             end_city = cor_path[i + 1]
+            start_city_name = path[i]
+            end_city_name = path[i+1]
             
             # Get the coordinates of the start and end cities
             start_coords = (start_city[0], start_city[1])
             end_coords = (end_city[0], end_city[1])
-            line = folium.PolyLine(locations=[start_coords, end_coords], color='blue', weight=3)
+            
+            
+            distance = self.get_distance(start_city_name, end_city_name)
+            # distance = 32.21
+            
+            line = folium.PolyLine(locations=[start_coords, end_coords], color=color, weight=3)
+            
+            # Calculate the midpoint of the line
+            midpoint_coords = [(start_coords[0] + end_coords[0]) / 2, (start_coords[1] + end_coords[1]) / 2]
+            
+            # Add a label with the distance on the line
+            folium.Marker(
+                location=midpoint_coords,
+                icon=folium.DivIcon(html=f'<div style="font-size: 13px; color: black;">{distance:.2f} km</div>')
+            ).add_to(self.palestine_map)
+            
             # Add the PolyLine to the map
             line.add_to(self.palestine_map)
             self.palestine_map.save(self.html_file)
         
         
         self.create_UI(self.html_file)
+    
+    def get_distance(self, city1, city2):
+        cities_distances = getData.get_road_distacnes()
+        
+        for data in cities_distances:
+            # print(data, city1, city2)
+            if (data['city1'] == city1 and data['city2'] == city2) or (data['city2'] == city1 and data['city1'] == city2):
+                return data['road distance']
+        return 0
+        
     
     def displayGraphRoad(self) :
         getGraph.make_graph_with_road_distance(getData)
@@ -201,6 +195,7 @@ class MainWindow(QMainWindow):
             end = timeir()
             time = (end-start) * 1000
             if result != None:
+                print(result)
                 self.drawLine(result)
                 self.palestine_map.save(self.html_file)
                 message_box.setIcon(QMessageBox.Information)

@@ -43,7 +43,7 @@ def make_graph_with_road_distance(getData) :
     plt.show()
 
 
-def get_edges_with_values(getData):
+def get_graph_values(getData):
     # Create an empty graph
     G = nx.Graph()
 
